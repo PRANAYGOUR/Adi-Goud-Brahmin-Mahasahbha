@@ -12,6 +12,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// ✅ Redirect if not logged in
+if (!localStorage.getItem("userEmail")) {
+    window.location.href = "index.html"; // 🔁 redirect to login page
+}
+
 async function fetchUserProfile() {
     try {
         console.log("📡 Fetching user profile from Firestore...");
@@ -50,7 +55,6 @@ async function fetchUserProfile() {
     }
 }
 
-
 // ✅ Logout Function
 function logout() {
     localStorage.removeItem("userEmail");
@@ -69,7 +73,6 @@ function setupProfileLink() {
             const phone = localStorage.getItem("userPhone");
 
             if (name && phone) {
-                // Redirect to profile with parameters
                 const encodedName = encodeURIComponent(name);
                 const encodedPhone = encodeURIComponent(phone);
                 window.location.href = `profile.html?name=${encodedName}&phone=${encodedPhone}`;
